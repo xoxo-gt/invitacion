@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Pantalla de inicio */
+        .pantalla-inicio {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.1); /* Fondo oscuro para el anuncio */
+        }
+
+        .anuncio img {
+            width: 50px;
+            height: 50px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .anuncio p {
+            font-size: 1.5rem;
+            color: white;
+            margin-top: 10px;
+        }
+
+        /*  keyframe para el icono de click del inicio pero ya no se pone porque es el mismo que usa el boton confetti
+	@keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        } */
+
+        /* Contenedor de las imágenes del sobre */
+        .contenedor-sobre {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        /* Imágenes del sobre */
+        .imagen-sobre {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 1.5s ease-in-out;
+        }
+
+        .imagen-izquierda {
+            background-image: url('part1.png');
+            transform-origin: left;
+        }
+
+        .imagen-derecha {
+            background-image: url('part2.png');
+            transform-origin: right;
+        }
+
+        /* Animación de deslizamiento */
+        .deslizar-izquierda {
+            transform: translateX(-100%);
+        }
+
+        .deslizar-derecha {
+            transform: translateX(100%);
+        }
+
+        /* Estilos de la página principal */
+        .pagina-principal {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Estilos del contenido principal 
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; */
+        }
+
+        main {
+            margin-top: 60px;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 2px solid #ddd;
+            position: relative;
+            overflow: hidden;
+            z-index: 1; /* Asegura que el contenido esté por encima del fondo */
+        }
+
+        /* Efecto parallax para el fondo de las secciones */
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1; /* Asegura que el fondo esté detrás del contenido */
+            transform: translateZ(-1px) scale(1.2); /* Efecto parallax */
+        }
+
+
+
+
+
+
+
+
+        /* Fondos personalizados para cada sección 
+        #seccion1::before {
+            background-image: url('fondo1.jpg');
+        }  
+
+        #seccion2::before {
+            background-image: url('fondo2.jpg');
+        }
+
+        #seccion3::before {
+            background-image: url('fondo3.jpg');
+        }   */
+
+        #seccion4::before {
+            background-image: url('fondo4.jpg');
+        } 
+
+       /* #seccion5::before {
+            background-image: url('fondo5.jpg');
+        } */
+
+        section h2 {
+            margin: 0;
+            font-size: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+	     z-index: 2;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+	     z-index: 2;
+        }
+
+        /* Animación al hacer scroll */
+        section.visible h2,
+        section.visible p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+       /* footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 60px;
+            width: 100%;
+        } */
+
+        .botones-fijos {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #444;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .botones-fijos button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .botones-fijos button:hover {
+            background-color: #666;
+        }
+
+        /* Estilos para los mensajes estilo WhatsApp */
+        .contenedor-mensajes {
+            position: fixed;
+            bottom: 20px;
+            right: 5px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .mensaje {
+            background-color: #25d366;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: aparecer 0.5s ease-in-out;
+        }
+
+        @keyframes aparecer {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .mensaje.desaparecer {
+            animation: desaparecer 0.5s ease-in-out forwards;
+        }
+
+        @keyframes desaparecer {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+        }
+
+      .boton-confeti {
+    position: fixed;
+    top: 50px;
+    right: 1px;
+background-color: rgba(0, 0, 0, 0.5); /* Negro semi-transparente */
+color: #fff; /* Texto blanco */
+border-radius: 8px; /* Bordes redondeados */
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 5;
+    animation: pulse 1.5s infinite; /* Animación de pulso */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.boton-confeti:hover {
+    animation: none; /* Detiene la animación al hacer hover */
+    background-color: rgba(0, 0, 0, 0.5); /* Negro semi-transparente */
+    transform: scale(1.05);
+        }
+
+
+
+@keyframes neon {
+    0% { text-shadow: 0 0 5px #fff, 0 0 10px #ff0, 0 0 20px #ff0; }
+    50% { text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0; }
+    100% { text-shadow: 0 0 5px #fff, 0 0 10px #ff0, 0 0 20px #ff0; }
+}
+
+.neon {
+    font-weight: bold;
+    color: yellow;
+    animation: neon 1.5s infinite alternate;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilos para la sección 1 */
+#seccion1 {
+    position: relative;
+    overflow: hidden; /* Oculta el desbordamiento de las imágenes */
+}
+
+/* Fondo de la sección 1 (imagen JPG) */
+#seccion1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('fondo1.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -1; /* Coloca el fondo detrás del contenido */
+    transform: translateZ(-1px) scale(1.2); /* Efecto parallax */
+}
+
+/* Imagen al frente (imagen PNG) */
+.imagen-frente {
+    position: absolute;
+    bottom: 300px; /* Ajusta la posición vertical */
+    left: 50%; /* Centra horizontalmente */
+    transform: translateX(-50%); /* Centra exactamente */
+    width: 400px; /* Ajusta el tamaño de la imagen */
+    z-index: 2; /* Coloca la imagen por encima del fondo */
+    transition: transform 0.5s ease-out; /* Suaviza el movimiento */
+}
+
+/* Efecto parallax para la imagen al frente */
+#seccion1:hover .imagen-frente {
+    transform: translateX(-50%) translateY(-20px); /* Mueve la imagen hacia arriba */
+}
+
+/* Contenido de la sección 1 */
+.contenido {
+    position: relative;
+    z-index: 2; /* Asegura que el contenido esté por encima de las imágenes */
+    text-align: center;
+    color: white; /* Cambia el color del texto para que sea legible */
+}
+.contenido h1 {
+    position: relative;
+    top: 200px; /* Baja solo el título */
+    color: white; /* Color del texto */
+  text-shadow: 8px 8px 12px rgba(0, 0, 0, 9); /* Sombra suave */
+   -webkit-text-stroke: 0.5px #2a3e83; /* Contorno de 0.5px de color negro */
+}
+
+
+
+
+
+
+
+/* Estilos para la sección 2 */
+#seccion2 {
+    position: relative;
+    overflow: hidden; /* Oculta el desbordamiento de las imágenes */
+}
+
+/* Fondo de la sección 2 (imagen JPG) */
+#seccion2::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('fondo2.jpg'); /* Cambia a una imagen diferente */
+    background-size: cover;
+    background-position: center;
+    z-index: -1; /* Coloca el fondo detrás del contenido */
+    transform: translateZ(-1px) scale(1.2); /* Efecto parallax */
+}
+
+/* Imagen al frente (imagen PNG) */
+.imagen-frente2 {
+    position: absolute;
+    bottom: 300px; /* Ajusta la posición vertical */
+    left: 50%; /* Centra horizontalmente */
+    transform: translateX(-50%); /* Centra exactamente */
+    width: 400px; /* Ajusta el tamaño de la imagen */
+    z-index: 1; /* Coloca la imagen detrás del contenido */
+    transition: transform 0.5s ease-out; /* Suaviza el movimiento */
+}
+
+/* Contenido de la sección 2 */
+.contenido2 {
+    position: relative;
+    z-index: 2; /* Asegura que el contenido esté por encima de las imágenes */
+    text-align: center;
+    color: white; /* Cambia el color del texto para que sea legible */
+}
+
+.contenido2 h2 {
+    position: relative;
+    top: 20px; /* Ajusta la posición vertical */
+    color: white; /* Color del texto */
+    text-shadow: 8px 8px 12px rgba(0, 0, 0, 9); /* Sombra suave */
+    -webkit-text-stroke: 0.5px #2a3e83; /* Contorno de 0.5px de color negro */
+}
+.contenido2 h1 {
+    color: white; /* Color del texto */
+    text-shadow: 8px 8px 12px rgba(0, 0, 0, 9); /* Sombra suave */
+    -webkit-text-stroke: 0.5px #2a3e83; /* Contorno de 0.5px de color negro */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Estilos para la sección 3 */
+#seccion3 {
+    position: relative;
+    overflow: hidden; /* Oculta el desbordamiento de las imágenes */
+}
+
+/* Fondo de la sección 2 (imagen JPG) */
+#seccion3::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('fondo33.jpg'); /* Cambia a una imagen diferente */
+    background-size: cover;
+    background-position: center;
+    z-index: -1; /* Coloca el fondo detrás del contenido */
+    transform: translateZ(-1px) scale(1.2); /* Efecto parallax */
+}
+
+/* Imagen al frente (imagen PNG) */
+.imagen-frente3 {
+    position: absolute;
+    bottom: 300px; /* Ajusta la posición vertical */
+    left: 50%; /* Centra horizontalmente */
+    transform: translateX(-50%); /* Centra exactamente */
+    width: 400px; /* Ajusta el tamaño de la imagen */
+    z-index: 1; /* Coloca la imagen detrás del contenido */
+    transition: transform 0.5s ease-out; /* Suaviza el movimiento */
+}
+
+/* Contenido de la sección 2 */
+.contenido3 {
+    position: relative;
+    z-index: 2; /* Asegura que el contenido esté por encima de las imágenes */
+    text-align: center;
+    color: white; /* Cambia el color del texto para que sea legible */
+}
+
+.contenido3 h2 {
+    position: relative;
+    top: 20px; /* Ajusta la posición vertical */
+    color: white; /* Color del texto */
+    text-shadow: 8px 8px 12px rgba(0, 0, 0, 9); /* Sombra suave */
+    -webkit-text-stroke: 0.5px #2a3e83; /* Contorno de 0.5px de color negro */
+}
+.contenido3 h1 {
+    color: white; /* Color del texto */
+    text-shadow: 8px 8px 12px rgba(0, 0, 0, 9); /* Sombra suave */
+    -webkit-text-stroke: 0.5px #2a3e83; /* Contorno de 0.5px de color negro */
+}
+
+
+
+
+
+
+
+
+/* Estilos para el botón de WhatsApp */
+.boton-whatsapp {
+    display: inline-block;
+    background-color: #25d366; /* Color de WhatsApp */
+    color: white;
+    padding: 20px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-whatsapp:hover {
+    background-color: #128c7e; /* Color de WhatsApp (hover) */
+}
+
+
+
+
+
+
+
+#contador {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 200px;
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+}
+
+#contador div {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 20px;
+}
+
+#contador span {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+
+/* Estilos para el carrusel giratorio */
+.carrusel-giratorio {
+    width: 300px; /* Ajusta el tamaño del carrusel */
+    height: 250px;
+    perspective: 2000px; /* Define la perspectiva 3D */
+    margin: 20px auto;
+    position: relative;
+}
+
+.carrusel-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d; /* Mantiene la perspectiva 3D */
+    animation: girar 20s infinite linear; /* Animación giratoria */
+}
+
+.carrusel-item {
+    width: 100%;
+    height: 130%;
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.carrusel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen al contenedor */
+}
+
+/* Posicionamiento de las fotos en 3D */
+.carrusel-item:nth-child(1) { transform: rotateY(0deg) translateZ(300px); }
+.carrusel-item:nth-child(2) { transform: rotateY(60deg) translateZ(300px); }
+.carrusel-item:nth-child(3) { transform: rotateY(120deg) translateZ(300px); }
+.carrusel-item:nth-child(4) { transform: rotateY(180deg) translateZ(300px); }
+.carrusel-item:nth-child(5) { transform: rotateY(240deg) translateZ(300px); }
+.carrusel-item:nth-child(6) { transform: rotateY(300deg) translateZ(300px); }
+
+/* Animación giratoria */
+@keyframes girar {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+
+
+    </style>
+</head>
+<body>
+
+
+
+    <!-- Pantalla de inicio -->
+    <div class="pantalla-inicio" id="pantallaInicio">
+        <div class="anuncio">
+            <img src="click.png" alt="Click aquí">
+<p class="neon">¡Haz clic!</p>
+
+
+        </div>
+    </div>
+
+    <!-- Contenedor de las imágenes del sobre -->
+    <div class="contenedor-sobre" id="contenedorSobre">
+        <div class="imagen-sobre imagen-izquierda" id="imagenIzquierda"></div>
+        <div class="imagen-sobre imagen-derecha" id="imagenDerecha"></div>
+    </div>
+
+    <!-- Contenedor de mensajes estilo WhatsApp -->
+    <div class="contenedor-mensajes" id="contenedorMensajes"></div>
+
+    <!-- Reproductor de música de fondo -->
+    <audio id="musicaFondo">
+        <source src="birth.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Reproductor de sonido (oculto) -->
+    <audio id="sonidoNotificacion">
+        <source src="plop.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- Reproductor de sonido para el confeti del botón -->
+    <audio id="sonidoConfeti">
+        <source src="Confetti.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- Página principal (visible desde el inicio) -->
+    <div class="pagina-principal" id="paginaPrincipal">
+     <!--    <header>
+            <h1>Bienvenido a Mi App</h1>
+        </header>  -->
+        <main>
+
+     <section id="seccion1">
+        <div class="contenido">
+            <h1>¡Estamos contando los días para celebrar juntos!</h1>
+            <p></p>
+  <div id="contador">
+            <div><span id="dias"></span> &nbsp;Días&nbsp;&nbsp;</div>
+            <div><span id="horas"></span> &nbsp;Horas&nbsp;</div>
+            <div><span id="minutos"></span> Minutos</div>
+            <div><span id="segundos"></span> Seg.</div>
+        </div>
+        </div>
+        <img src="bebe.png" alt="Imagen al frente" class="imagen-frente">
+    </section>
+
+<section id="seccion2">
+    <div class="contenido2">
+        <h2>Fecha: </h2>
+        <h1>Domingo 30 de marzo</h1>
+
+	<h2>Hora: </h2>
+        <h1>05:00 pm</h1>
+
+	<h2>Lugar: </h2>
+        <h1>Salon Las Flores, zona  4</h1>
+    </div>
+    <img src="smoke-022.png" alt="Imagen al frente2" class="imagen-frente2">
+</section>
+
+
+          
+<section id="seccion3">
+    <div class="contenido3">
+        <h2></h2>
+        <p></p>
+        <!-- Botón de WhatsApp -->
+        <a href="https://wa.me/+50236918128?text=Hola,%20confirmo%20mi%20asistencia%20al%20Cumple :).%20¡Nos%20vemos%20allí!" 
+           target="_blank" 
+           class="boton-whatsapp">
+            Click para confirmar asistencia
+        </a>
+    </div>
+   <img src="smoke-01.png" alt="Imagen al frente3" class="imagen-frente3">
+</section>
+
+
+
+<section id="seccion4">
+    <div class="contenido">
+        <h2></h2>
+        <p></p>
+        <!-- Carrusel giratorio -->
+        <div class="carrusel-giratorio">
+            <div class="carrusel-inner">
+                <div class="carrusel-item">
+                    <img src="foto11.jpg" alt="Foto 1">
+                </div>
+                <div class="carrusel-item">
+                    <img src="foto22.jpg" alt="Foto 2">
+                </div>
+                <div class="carrusel-item">
+                    <img src="foto33.jpg" alt="Foto 3">
+                </div>
+                <div class="carrusel-item">
+                    <img src="foto44.jpg" alt="Foto 4">
+                </div>
+                <div class="carrusel-item">
+                    <img src="foto55.jpg" alt="Foto 5">
+                </div>
+                <div class="carrusel-item">
+                    <img src="foto66.jpg" alt="Foto 6">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- seccion 5 o mas
+            <section id="seccion5">
+                <h2>Sección 5</h2>
+                <p>Contenido de la sección 5. ¡Llegaste al final!</p>
+            </section>   -->
+        
+</main>
+
+        <!-- Barra de botones fijos 
+        <div class="botones-fijos">
+            <button onclick="irASeccion('seccion1')">Inicio</button>
+            <button onclick="irASeccion('seccion2')">Buscar</button>
+            <button onclick="irASeccion('seccion3')">Perfil</button>
+            <button onclick="irASeccion('seccion4')">Config</button>
+            <button onclick="irASeccion('seccion5')">Ayuda</button>
+        </div> -->
+
+    <!-- Botón de confeti -->
+    <button class="boton-confeti" onclick="lanzarConfetiBoton()">🎉 Lanzar Confeti</button>
+
+    <!-- Script de canvas-confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // Función para iniciar la animación
+        function iniciarAnimacion() {
+            // Oculta el anuncio
+            const anuncio = document.querySelector('.anuncio');
+            anuncio.style.display = 'none';
+
+            // Oculta la pantalla de inicio
+            document.getElementById('pantallaInicio').style.display = 'none';
+
+            // Desliza las imágenes hacia los lados
+            const imagenIzquierda = document.getElementById('imagenIzquierda');
+            const imagenDerecha = document.getElementById('imagenDerecha');
+
+            imagenIzquierda.classList.add('deslizar-izquierda');
+            imagenDerecha.classList.add('deslizar-derecha');
+
+            // Oculta el contenedor del sobre después de la animación
+            setTimeout(() => {
+                document.getElementById('contenedorSobre').style.display = 'none';
+            }, 1500); // 1500ms = 1.5s
+
+            // Lanza el confeti automáticamente después de la animación
+            setTimeout(() => {
+                lanzarConfetiAutomatico();
+            }, 1500); // 1500ms = 1.5s (el mismo tiempo que la animación)
+
+            // Inicia los mensajes estilo WhatsApp
+            iniciarMensajes();
+
+            // Reproduce la música de fondo
+            const musicaFondo = document.getElementById('musicaFondo');
+            musicaFondo.play().catch(error => console.log("Autoplay bloqueado:", error));
+        }
+
+        // Agregar evento de clic a la pantalla de inicio
+        document.getElementById('pantallaInicio').addEventListener('click', iniciarAnimacion);
+
+        // Función para desplazarse a una sección específica
+        function irASeccion(idSeccion) {
+            const seccion = document.getElementById(idSeccion);
+            seccion.scrollIntoView({
+                behavior: 'smooth'
+            });
+
+            // Activar animación de la sección
+            setTimeout(() => {
+                seccion.classList.add('visible');
+            }, 500); // Retraso para sincronizar con el scroll
+        }
+
+        // Función para mostrar mensajes estilo WhatsApp
+        function mostrarMensaje(texto) {
+            const contenedorMensajes = document.getElementById('contenedorMensajes');
+            const mensaje = document.createElement('div');
+            mensaje.classList.add('mensaje');
+            mensaje.textContent = texto;
+
+            // Reproduce el sonido de notificación
+            const sonido = document.getElementById('sonidoNotificacion');
+            sonido.play();
+
+            // Agrega el mensaje al contenedor
+            contenedorMensajes.appendChild(mensaje);
+
+            // Desplaza el contenedor hacia arriba
+            contenedorMensajes.scrollTop = contenedorMensajes.scrollHeight;
+
+            // Elimina el mensaje después de 5 segundos
+            setTimeout(() => {
+                mensaje.classList.add('desaparecer');
+                mensaje.addEventListener('animationend', () => {
+                    mensaje.remove();
+                });
+            }, 7000); // 7000ms = 7s
+        }
+
+        // Función para iniciar los mensajes
+        function iniciarMensajes() {
+            const mensajes = [
+                "Querida familia y amigos!",
+                "ustedes son muy especiales para mí ☺️",
+                "y no podía dejar pasar este día 🎂",
+                "sin compartirlo con quienes más aprecio. 💖",
+                "Aca les dejo la invitación con los detalles 💌",
+		"Espero verlos y abrazarlos muy pronto.",
+		"¡Los quiero muchísimo! 💕🎉",
+		"❤️❤️❤️",
+            ];
+
+            let indiceMensaje = 0;
+            const intervalo = setInterval(() => {
+                if (indiceMensaje < mensajes.length) {
+                    mostrarMensaje(mensajes[indiceMensaje]);
+                    indiceMensaje++;
+                } else {
+                    clearInterval(intervalo); // Detiene el intervalo después de mostrar todos los mensajes
+                }
+            }, 2000); // 2000ms = 2s
+        }
+
+        // Función para lanzar confeti automáticamente
+        function lanzarConfetiAutomatico() {
+            var duration = 7 * 1000; // Duración del confeti (7 segundos)
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                // Lanza confeti desde la izquierda
+                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+                // Lanza confeti desde la derecha
+                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+            }, 250); // Lanza confeti cada 250ms
+        }
+
+        // Función para lanzar confeti con el botón
+        function lanzarConfetiBoton() {
+            // Reproduce el sonido de confeti
+            const sonidoConfeti = document.getElementById('sonidoConfeti');
+            sonidoConfeti.play();
+
+            var count = 200;
+            var defaults = {
+                origin: { y: 0.7 }
+            };
+
+            function fire(particleRatio, opts) {
+                confetti({
+                    ...defaults,
+                    ...opts,
+                    particleCount: Math.floor(count * particleRatio)
+                });
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+            });
+            fire(0.2, {
+                spread: 60,
+            });
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                scalar: 1.2
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
+        }
+
+     
+
+
+
+
+
+
+
+
+  // Función para detectar el scroll y activar animaciones
+        function handleScroll() {
+            const secciones = document.querySelectorAll('section');
+            secciones.forEach(seccion => {
+                const rect = seccion.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+                    seccion.classList.add('visible');
+                }
+            });
+        }
+
+        // Escuchar el evento de scroll
+        window.addEventListener('scroll', handleScroll);
+
+        // Activar animaciones al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            handleScroll(); // Verificar si alguna sección ya está visible al cargar
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// parallax seccion1
+window.addEventListener('scroll', function () {
+    const seccion1 = document.getElementById('seccion1');
+    const imagenFrente = document.querySelector('.imagen-frente');
+    const scrollY = window.scrollY;
+
+    // Ajusta la posición de la imagen PNG en función del scroll
+    imagenFrente.style.transform = `translateX(-50%) translateY(${scrollY * 0.6}px)`;
+});
+
+// parallax seccion2
+window.addEventListener('scroll', function () {
+    const seccion2 = document.getElementById('seccion2');
+    const imagenFrente2 = document.querySelector('.imagen-frente2');
+    const scrollY = window.scrollY;
+
+    // Ajusta la posición de la imagen PNG en función del scroll
+    const parallaxOffset = scrollY * 0.3; // Ajusta la velocidad del parallax
+    imagenFrente2.style.transform = `translateX(-50%) translateY(${parallaxOffset}px)`;
+});
+
+// parallax seccion3
+window.addEventListener('scroll', function () {
+    const seccion3 = document.getElementById('seccion3');
+    const imagenFrente3 = document.querySelector('.imagen-frente3');
+    const scrollY = window.scrollY;
+
+    // Ajusta la posición de la imagen PNG en función del scroll
+    const parallaxOffset = scrollY * 0.2; // Ajusta la velocidad del parallax
+    imagenFrente3.style.transform = `translateX(-50%) translateY(${parallaxOffset}px)`;
+});
+
+
+
+
+
+// Fecha del evento (30 de marzo)
+const fechaEvento = new Date('2025-03-30T05:00:00');
+
+function actualizarContador() {
+    const ahora = new Date(); // Fecha y hora actual
+    const diferencia = fechaEvento - ahora; // Diferencia en milisegundos
+
+    // Si la fecha del evento ya pasó
+    if (diferencia <= 0) {
+        document.getElementById('contador').innerHTML = "<div>¡Es hoy :)!</div>";
+        return;
+    }
+
+    // Calcula días, horas, minutos y segundos
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+    // Actualiza el contenido del contador
+    document.getElementById('dias').textContent = dias;
+    document.getElementById('horas').textContent = horas;
+    document.getElementById('minutos').textContent = minutos;
+    document.getElementById('segundos').textContent = segundos;
+}
+
+// Actualiza el contador cada segundo
+setInterval(actualizarContador, 1000);
+
+// Inicializa el contador al cargar la página
+actualizarContador();
+
+
+
+
+    </script>
+
+
+</body>
+</html>
